@@ -1,9 +1,29 @@
+import { useEffect } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
+import { initFirebase } from  "client/firebase"
+import { getDatabase, ref, onValue} from "firebase/database";
+
+
+const { db } = initFirebase()
+
 const Home: NextPage = () => {
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const starCountRef = ref(db, 'dependencyTrees/')
+      onValue(starCountRef, (snapshot) => {
+        const data = snapshot.val();
+        console.log({client: data})
+      });
+    }
+
+    fetchData()
+  }, [])
+
   return (
     <div className={styles.container}>
       <Head>
