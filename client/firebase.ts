@@ -10,7 +10,6 @@ import { isStringNotEmpty } from "utils/strings"
 
 const FIREBASE_API_KEY = process.env.NEXT_PUBLIC_FIREBASE_API_KEY
 const FIREBASE_AUTH_DOMAIN = process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-// const FIREBASE_DB_URL = process.env.NEXT_PUBLIC_FIREBASE_DB_URL
 const FIREBASE_DB_URL = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_EMULATOR
 const FIREBASE_PROJECT_ID = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
 const FIREBASE_STORAGE_BUCKET = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
@@ -27,13 +26,6 @@ const config = {
   messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
   appId: FIREBASE_APP_ID,
 };
-
-// const config = {
-//   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-//   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-//   databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DB_URL,
-//   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-// }
 
 const initFirebase = (): {
   firebaseApp: FirebaseApp

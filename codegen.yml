@@ -1,0 +1,27 @@
+overwrite: true
+schema:
+  - "server/schema.ts"
+  - "server/**/graphql.ts"
+config:
+  typesPrefix: GQL
+generates:
+  generated/graphqlTypes.ts:
+    plugins:
+      - "typescript"
+      - "typescript-resolvers"
+    config:
+      scalars:
+        DateTime: number
+      useIndexSignature: true
+  generated/documentTypes.ts:
+    config:
+      scalars:
+        DateTime: number
+    documents:
+      - "components/**/!(*.d).{ts,tsx}"
+      - "pages/**/!(*.d).{ts,tsx}"
+      - "client/**/!(*.d).{ts,tsx}"
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"

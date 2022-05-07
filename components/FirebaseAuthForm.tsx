@@ -1,3 +1,4 @@
+export const a = () => {}
 // import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 // import firebaseui from "firebaseui"
 // import { useEffect } from "react"
