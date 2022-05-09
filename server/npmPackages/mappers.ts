@@ -1,6 +1,6 @@
 import { GQLNpmPackage, GQLNpmPackageVersion, GQLNpmSuggestion } from "generated/graphqlTypes";
 import { DBMap, DBResult } from "server/firebaseWrapper";
-import { NpmAuthor, NpmPackage, NpmPackageVersion, NpmSuggestion } from "./interfaces";
+import { NpmAdvancedSearchPackage, NpmAuthor, NpmPackage, NpmPackageVersion, NpmSuggestion } from "./interfaces";
 
 export function toStorageOutSuggestion(suggestion: NpmSuggestion): GQLNpmSuggestion {
   return {
@@ -104,6 +104,23 @@ export function toStorageOutPackage({id, dbVal}: DBResult<NpmPackage>): GQLNpmPa
         name: dbVal.author.name || "",
         email: dbVal.author.email || "",
         url: dbVal.author.url || "",
+      }
+    }),
+  }
+}
+
+export function toStorageOutSearchPackages({id, dbVal}: DBResult<NpmAdvancedSearchPackage>): GQLNpmPackage {
+  return {
+    id,
+    description: dbVal.description,
+    updatedAt: Date.now(),
+    name: dbVal.name,
+    latestVersion: dbVal.version,
+    ...(dbVal.maintainers && {
+      author: {
+        id: dbVal.maintainers[0].username || "",
+        name: dbVal.maintainers[0].username || "",
+        email: dbVal.maintainers[0].email || "",
       }
     }),
   }

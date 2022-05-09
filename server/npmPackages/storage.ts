@@ -1,4 +1,4 @@
-import { GQLNpmPackage, GQLNpmPackageVersion } from "generated/graphqlTypes";
+import { GQLAdvancedSearchNoteInput, GQLAdvancedSearchQuery, GQLNpmPackage, GQLNpmPackageVersion } from "generated/graphqlTypes";
 import { ID, PageQuery, PaginatedList } from "interfaces";
 import * as paginatedLists from "utils/paginatedLists"
 import { NpmPackage, NpmPackageVersion, StorageOutNpmSuggestion } from "./interfaces";
@@ -48,7 +48,7 @@ export async function getNpmPackageDetails(packageName: ID, shouldFetchFromRegis
 
 export async function listNpmPackageVersionsPaginated(
   packageId: ID,
-  pageQuery: PageQuery<ID> = paginatedLists.getDefaultPageQuery(),  
+  pageQuery: PageQuery<ID> = paginatedLists.getDefaultPageQuery(),
 ): Promise<PaginatedList<GQLNpmPackageVersion, ID>> {
   const firebaseResult = await firebaseWrapper.listCollectionPaginated<NpmPackageVersion>(
     `${NPM_PACKAGES_COLLECTION}/${packageId}/versions`,
@@ -59,7 +59,22 @@ return paginatedLists.map(firebaseResult, mappers.fromNpmPackageVersionDbVal)
 }
 
 export async function printNpmPackageDepsTree(packageId: ID, version: string): Promise<string> {
-  const tree = await npmRegistryWrapper.calculateDepsTree(packageId, version)
-  console.log({tree})
+  await npmRegistryWrapper.calculateDepsTree(packageId, version)
   return "test"
+}
+
+export async function doSearchAndSaveHistory(
+  query: GQLAdvancedSearchQuery,
+  input: GQLAdvancedSearchNoteInput,
+  ): Promise<GQLNpmPackage[]> {
+  // search
+  const result = await npmRegistryWrapper.searchNpmPackage(query.searchText)
+
+  // save history
+
+  // return
+  return result.map((npmPackage) => mappers.toStorageOutSearchPackages({
+    id: `${npmPackage.name}-${npmPackage.version}`,
+    dbVal: npmPackage,
+  }))
 }

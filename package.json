@@ -35,6 +35,7 @@
     "lodash": "^4.17.21",
     "micro": "^9.3.4",
     "micro-cors": "^0.1.1",
+    "nanoid": "^3.3.4",
     "next": "12.1.5",
     "npm-package-arg": "^9.0.2",
     "react": "17",

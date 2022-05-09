@@ -71,3 +71,14 @@ export interface NpmPackage {
   // time: Record<string, string>
 }
 
+export interface NpmAdvancedSearchPackage {
+  id: ID
+  name: string
+  scope: string
+  version: string
+  description: string
+  keywords: string[]
+  date: string
+  links: string[]
+  maintainers: NpmContributor[]
+}

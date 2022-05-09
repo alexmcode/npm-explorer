@@ -20,8 +20,8 @@ export const typeDefs = gql`
 
   type NpmPackage {
     id: ID!
-    updatedAt: DateTime!
     name: String!
+    updatedAt: DateTime!
     latestVersion: String!
     description: String!
     author: Contributor
@@ -54,11 +54,23 @@ export const typeDefs = gql`
     edges: [NpmPackageVersionEdge!]!
   }
 
+  input AdvancedSearchQuery {
+    searchText: String!
+  }
+
+  input AdvancedSearchNoteInput {
+    message: String!
+  }
+
   type Query {
     npmSuggestions(term: String!): [NpmSuggestion!]!
     npmPackageDetails(packageId: ID!, shouldFetchFromRegistry: Boolean!): NpmPackage!
     npmPackageVersions(packageId: ID!, pageQuery: PageQuery): NpmPackageVersionPaginatedList!
     printNpmPackageDepsTree(packageId: ID!, packageVersion: String!): String!
+  }
+
+  type Mutation {
+    doSearchAndSaveHistory(query: AdvancedSearchQuery!, input: AdvancedSearchNoteInput!): [NpmPackage!]!
   }
 `
 
@@ -86,6 +98,8 @@ export const resolvers: GQLResolvers<AppContext> = {
   },
 
   Mutation: {
-
+    async doSearchAndSaveHistory(_parent, { query, input }, _ctx) {
+      return storage.doSearchAndSaveHistory(query, input)
+    }
   },
 }

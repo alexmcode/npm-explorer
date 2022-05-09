@@ -16,6 +16,14 @@ export type Scalars = {
   DateTime: number;
 };
 
+export type GQLAdvancedSearchNoteInput = {
+  message: Scalars['String'];
+};
+
+export type GQLAdvancedSearchQuery = {
+  searchText: Scalars['String'];
+};
+
 export type GQLContributor = {
   __typename?: 'Contributor';
   email: Scalars['String'];
@@ -39,12 +47,19 @@ export type GQLIdToken = {
 export type GQLMutation = {
   __typename?: 'Mutation';
   createSessionCookie: Scalars['String'];
+  doSearchAndSaveHistory: Array<GQLNpmPackage>;
   signOut: Scalars['Boolean'];
 };
 
 
 export type GQLMutationCreateSessionCookieArgs = {
   session: GQLCreateSessionCookieInput;
+};
+
+
+export type GQLMutationDoSearchAndSaveHistoryArgs = {
+  input: GQLAdvancedSearchNoteInput;
+  query: GQLAdvancedSearchQuery;
 };
 
 export type GQLMyself = {
@@ -120,7 +135,6 @@ export type GQLQuery = {
   npmPackageVersions: GQLNpmPackageVersionPaginatedList;
   npmSuggestions: Array<GQLNpmSuggestion>;
   printNpmPackageDepsTree: Scalars['String'];
-  testQ: GQLTestResult;
 };
 
 
@@ -146,11 +160,6 @@ export type GQLQueryPrintNpmPackageDepsTreeArgs = {
   packageVersion: Scalars['String'];
 };
 
-
-export type GQLQueryTestQArgs = {
-  param: Scalars['String'];
-};
-
 export type GQLSignInWithEmailInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -164,11 +173,6 @@ export enum GQLSortDirection {
 export type GQLSortKeyDirectionPair = {
   key: Scalars['String'];
   sortDirection: GQLSortDirection;
-};
-
-export type GQLTestResult = {
-  __typename?: 'TestResult';
-  package: Scalars['String'];
 };
 
 export enum GQLUserRole {
@@ -420,6 +424,14 @@ export type GQLListNpmSuggestionsQueryVariables = Exact<{
 
 
 export type GQLListNpmSuggestionsQuery = { __typename?: 'Query', npmSuggestions: Array<{ __typename?: 'NpmSuggestion', id: string, name: string, version: string, description: string }> };
+
+export type GQLDoSearchAndSaveHistoryMutationVariables = Exact<{
+  query: GQLAdvancedSearchQuery;
+  input: GQLAdvancedSearchNoteInput;
+}>;
+
+
+export type GQLDoSearchAndSaveHistoryMutation = { __typename?: 'Mutation', searchResult: Array<{ __typename?: 'NpmPackage', id: string, name: string, updatedAt: number, latestVersion: string, description: string }> };
 
 export const PackageDetailsFragmentDoc = gql`
     fragment PackageDetails on NpmPackage {
@@ -720,3 +732,41 @@ export function useListNpmSuggestionsLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type ListNpmSuggestionsQueryHookResult = ReturnType<typeof useListNpmSuggestionsQuery>;
 export type ListNpmSuggestionsLazyQueryHookResult = ReturnType<typeof useListNpmSuggestionsLazyQuery>;
 export type ListNpmSuggestionsQueryResult = Apollo.QueryResult<GQLListNpmSuggestionsQuery, GQLListNpmSuggestionsQueryVariables>;
+export const DoSearchAndSaveHistoryDocument = gql`
+    mutation doSearchAndSaveHistory($query: AdvancedSearchQuery!, $input: AdvancedSearchNoteInput!) {
+  searchResult: doSearchAndSaveHistory(query: $query, input: $input) {
+    id
+    name
+    updatedAt
+    latestVersion
+    description
+  }
+}
+    `;
+export type GQLDoSearchAndSaveHistoryMutationFn = Apollo.MutationFunction<GQLDoSearchAndSaveHistoryMutation, GQLDoSearchAndSaveHistoryMutationVariables>;
+
+/**
+ * __useDoSearchAndSaveHistoryMutation__
+ *
+ * To run a mutation, you first call `useDoSearchAndSaveHistoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDoSearchAndSaveHistoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [doSearchAndSaveHistoryMutation, { data, loading, error }] = useDoSearchAndSaveHistoryMutation({
+ *   variables: {
+ *      query: // value for 'query'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDoSearchAndSaveHistoryMutation(baseOptions?: Apollo.MutationHookOptions<GQLDoSearchAndSaveHistoryMutation, GQLDoSearchAndSaveHistoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GQLDoSearchAndSaveHistoryMutation, GQLDoSearchAndSaveHistoryMutationVariables>(DoSearchAndSaveHistoryDocument, options);
+      }
+export type DoSearchAndSaveHistoryMutationHookResult = ReturnType<typeof useDoSearchAndSaveHistoryMutation>;
+export type DoSearchAndSaveHistoryMutationResult = Apollo.MutationResult<GQLDoSearchAndSaveHistoryMutation>;
+export type DoSearchAndSaveHistoryMutationOptions = Apollo.BaseMutationOptions<GQLDoSearchAndSaveHistoryMutation, GQLDoSearchAndSaveHistoryMutationVariables>;

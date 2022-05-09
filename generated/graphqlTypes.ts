@@ -15,6 +15,14 @@ export type Scalars = {
   DateTime: number;
 };
 
+export type GQLAdvancedSearchNoteInput = {
+  message: Scalars['String'];
+};
+
+export type GQLAdvancedSearchQuery = {
+  searchText: Scalars['String'];
+};
+
 export type GQLContributor = {
   __typename?: 'Contributor';
   email: Scalars['String'];
@@ -38,12 +46,19 @@ export type GQLIdToken = {
 export type GQLMutation = {
   __typename?: 'Mutation';
   createSessionCookie: Scalars['String'];
+  doSearchAndSaveHistory: Array<GQLNpmPackage>;
   signOut: Scalars['Boolean'];
 };
 
 
 export type GQLMutationCreateSessionCookieArgs = {
   session: GQLCreateSessionCookieInput;
+};
+
+
+export type GQLMutationDoSearchAndSaveHistoryArgs = {
+  input: GQLAdvancedSearchNoteInput;
+  query: GQLAdvancedSearchQuery;
 };
 
 export type GQLMyself = {
@@ -119,7 +134,6 @@ export type GQLQuery = {
   npmPackageVersions: GQLNpmPackageVersionPaginatedList;
   npmSuggestions: Array<GQLNpmSuggestion>;
   printNpmPackageDepsTree: Scalars['String'];
-  testQ: GQLTestResult;
 };
 
 
@@ -145,11 +159,6 @@ export type GQLQueryPrintNpmPackageDepsTreeArgs = {
   packageVersion: Scalars['String'];
 };
 
-
-export type GQLQueryTestQArgs = {
-  param: Scalars['String'];
-};
-
 export type GQLSignInWithEmailInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -163,11 +172,6 @@ export enum GQLSortDirection {
 export type GQLSortKeyDirectionPair = {
   key: Scalars['String'];
   sortDirection: GQLSortDirection;
-};
-
-export type GQLTestResult = {
-  __typename?: 'TestResult';
-  package: Scalars['String'];
 };
 
 export enum GQLUserRole {
@@ -250,6 +254,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type GQLResolversTypes = ResolversObject<{
+  AdvancedSearchNoteInput: GQLAdvancedSearchNoteInput;
+  AdvancedSearchQuery: GQLAdvancedSearchQuery;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Contributor: ResolverTypeWrapper<GQLContributor>;
   CreateSessionCookieInput: GQLCreateSessionCookieInput;
@@ -272,12 +278,13 @@ export type GQLResolversTypes = ResolversObject<{
   SortDirection: GQLSortDirection;
   SortKeyDirectionPair: GQLSortKeyDirectionPair;
   String: ResolverTypeWrapper<Scalars['String']>;
-  TestResult: ResolverTypeWrapper<GQLTestResult>;
   UserRole: GQLUserRole;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type GQLResolversParentTypes = ResolversObject<{
+  AdvancedSearchNoteInput: GQLAdvancedSearchNoteInput;
+  AdvancedSearchQuery: GQLAdvancedSearchQuery;
   Boolean: Scalars['Boolean'];
   Contributor: GQLContributor;
   CreateSessionCookieInput: GQLCreateSessionCookieInput;
@@ -299,7 +306,6 @@ export type GQLResolversParentTypes = ResolversObject<{
   SignInWithEmailInput: GQLSignInWithEmailInput;
   SortKeyDirectionPair: GQLSortKeyDirectionPair;
   String: Scalars['String'];
-  TestResult: GQLTestResult;
 }>;
 
 export type GQLContributorResolvers<ContextType = any, ParentType extends GQLResolversParentTypes['Contributor'] = GQLResolversParentTypes['Contributor']> = ResolversObject<{
@@ -324,6 +330,7 @@ export type GQLIdTokenResolvers<ContextType = any, ParentType extends GQLResolve
 
 export type GQLMutationResolvers<ContextType = any, ParentType extends GQLResolversParentTypes['Mutation'] = GQLResolversParentTypes['Mutation']> = ResolversObject<{
   createSessionCookie?: Resolver<GQLResolversTypes['String'], ParentType, ContextType, RequireFields<GQLMutationCreateSessionCookieArgs, 'session'>>;
+  doSearchAndSaveHistory?: Resolver<Array<GQLResolversTypes['NpmPackage']>, ParentType, ContextType, RequireFields<GQLMutationDoSearchAndSaveHistoryArgs, 'input' | 'query'>>;
   signOut?: Resolver<GQLResolversTypes['Boolean'], ParentType, ContextType>;
 }>;
 
@@ -388,12 +395,6 @@ export type GQLQueryResolvers<ContextType = any, ParentType extends GQLResolvers
   npmPackageVersions?: Resolver<GQLResolversTypes['NpmPackageVersionPaginatedList'], ParentType, ContextType, RequireFields<GQLQueryNpmPackageVersionsArgs, 'packageId'>>;
   npmSuggestions?: Resolver<Array<GQLResolversTypes['NpmSuggestion']>, ParentType, ContextType, RequireFields<GQLQueryNpmSuggestionsArgs, 'term'>>;
   printNpmPackageDepsTree?: Resolver<GQLResolversTypes['String'], ParentType, ContextType, RequireFields<GQLQueryPrintNpmPackageDepsTreeArgs, 'packageId' | 'packageVersion'>>;
-  testQ?: Resolver<GQLResolversTypes['TestResult'], ParentType, ContextType, RequireFields<GQLQueryTestQArgs, 'param'>>;
-}>;
-
-export type GQLTestResultResolvers<ContextType = any, ParentType extends GQLResolversParentTypes['TestResult'] = GQLResolversParentTypes['TestResult']> = ResolversObject<{
-  package?: Resolver<GQLResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type GQLResolvers<ContextType = any> = ResolversObject<{
@@ -409,6 +410,5 @@ export type GQLResolvers<ContextType = any> = ResolversObject<{
   NpmSuggestion?: GQLNpmSuggestionResolvers<ContextType>;
   PageInfo?: GQLPageInfoResolvers<ContextType>;
   Query?: GQLQueryResolvers<ContextType>;
-  TestResult?: GQLTestResultResolvers<ContextType>;
 }>;
 

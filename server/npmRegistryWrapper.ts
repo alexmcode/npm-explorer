@@ -4,7 +4,7 @@ import * as async from 'async';
 import npa from 'npm-package-arg';
 
 import { BadRequestError, NotFoundError } from "./errors"
-import { NpmPackage, NpmSuggestion } from "./npmPackages/interfaces"
+import { NpmAdvancedSearchPackage, NpmPackage, NpmSuggestion } from "./npmPackages/interfaces"
 import { ID } from "interfaces";
 
 const NPM_BASE_URL = "https://www.npmjs.com"
@@ -17,6 +17,12 @@ const axiosInstanceNpm = axios.create({
 const axiosInstanceRegistry = axios.create({
   baseURL: NPM_REGISTRY_URL,
 })
+
+interface RegistrySearch<T> {
+  objects: T[]
+  total: number
+  time: string
+}
 
 export async function getSuggestionsByTerm(searchTerm: string): Promise<NpmSuggestion[]> {
   try {
@@ -53,10 +59,26 @@ export async function fetchNpmPackage<T>(packageName: string, packageVersion?: s
   }
 }
 
+export async function searchNpmPackage(searchText: string): Promise<NpmAdvancedSearchPackage[]> {
+  try {
+    const response: AxiosResponse<RegistrySearch<{ package: NpmAdvancedSearchPackage }>> = await axiosInstanceRegistry({
+      method: "GET",
+      url: `/-/v1/search?text=${searchText}`
+    })
+
+    if (response.status !== 200) {
+      throw new BadRequestError(JSON.stringify(response.data))
+    }
+
+    return response.data.objects.map((r) => r.package)
+  } catch (error) {
+    throw new BadRequestError(`NpmJs connection error: ${JSON.stringify(error)}`)
+  }
+}
+
 
 
 export async function calculateDepsTree(packageId: ID, version: string): Promise<void> {
-  console.log('START ======')
   const dependencyTree = {};
   const flatTree: Record<any, any> = {};
 
@@ -155,11 +177,6 @@ export async function calculateDepsTree(packageId: ID, version: string): Promise
       return dependencyTree
     });
 
-    console.log('push:', {
-      name: packageId,
-      version: version,
-      parent: dependencyTree,
-    })
     queue.push({
       name: packageId,
       version: version,

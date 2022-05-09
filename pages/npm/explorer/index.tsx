@@ -59,7 +59,6 @@ export const getServerSideProps: GetServerSideProps<ExplorerPageProps> = async (
 }
 
 const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
-  console.log({props})
   const router = useRouter()
   const routerPackageId =
     getFirst(router.query.npmPackageId) ?? props.npmPackageId ?? undefined
@@ -96,7 +95,7 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
 
   function changeCurrentTabIndex(v: number): void {
     setTabState({ ...tabState, currentTabIndex: v })
-    updateRouterParam(tabState.tabs[v]?.id)
+    // updateRouterParam(tabState.tabs[v]?.id)
   }
 
   function openTab(id: ID, name: string): void {
@@ -159,7 +158,6 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
       <NpmSuggestionsAutocomplete
         clearOnChange={true}
         onNpmPackageChange={(npmPackageId, npmPackageName) => {
-          console.log("Selected: ", {npmPackageId, npmPackageName})
           if (!npmPackageId || !npmPackageName) return
           openTab(npmPackageId, npmPackageName)
         }}
