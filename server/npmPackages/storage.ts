@@ -1,7 +1,7 @@
-import { GQLNpmPackage, GQLNpmPackageVersion, GQLNpmSuggestion, GQLPageQuery } from "generated/graphqlTypes";
+import { GQLNpmPackage, GQLNpmPackageVersion } from "generated/graphqlTypes";
 import { ID, PageQuery, PaginatedList } from "interfaces";
 import * as paginatedLists from "utils/paginatedLists"
-import { FirebaseNpmPackage, NpmPackage, NpmPackageVersion, StorageOutNpmSuggestion } from "./interfaces";
+import { NpmPackage, NpmPackageVersion, StorageOutNpmSuggestion } from "./interfaces";
 import * as firebaseWrapper from "server/firebaseWrapper"
 import * as npmRegistryWrapper from "server/npmRegistryWrapper"
 import * as mappers from "./mappers"

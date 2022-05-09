@@ -43,13 +43,8 @@ export const typeDefs = gql`
     roles: [String!]!
   }
 
-  type TestResult {
-    package: String!
-  }
-
   type Query {
     me: Myself!
-    testQ(param: String!): TestResult!
   }
 
   type Mutation {
@@ -59,9 +54,9 @@ export const typeDefs = gql`
 `
 export const resolvers: GQLResolvers<AppContext> = {
   Query: {
-    async testQ(parent, data, context) {
-      return await storage.testQ(data.param)
-    }
+    async me(_parent, _params, ctx) {
+      return ctx.user
+    },
   },
 
   Mutation: {

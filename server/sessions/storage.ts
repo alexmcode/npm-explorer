@@ -1,5 +1,5 @@
 import { Logger } from "Logger"
-import { GQLMyself, GQLTestResult } from "generated/graphqlTypes"
+import { GQLMyself } from "generated/graphqlTypes"
 export { createSessionCookie } from "server/firebaseWrapper"
 import * as firebaseWrapper from "server/firebaseWrapper"
 import * as mappers from "./mappers"
@@ -17,20 +17,5 @@ export async function verifySessionCookie(
   } catch (e) {
     L.error(e)
     return undefined
-  }
-}
-
-export async function testQ(param1: string): Promise<GQLTestResult> {
-  console.log({param1})
-  const dbResult =
-    await firebaseWrapper.getDocByPath<any>(
-      "react",
-      "dependencyTrees",
-    )
-
-  console.log({dbResult})
-
-  return {
-    package: dbResult?.dbVal || "not-found"
   }
 }

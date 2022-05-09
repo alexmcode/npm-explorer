@@ -58,22 +58,6 @@ export const getServerSideProps: GetServerSideProps<ExplorerPageProps> = async (
   }
 }
 
-// export const getInitialProps: GetServerSideProps<ExplorerPageProps> = async ({ query }) => {
-//   console.log({query})
-//   const npmPackageId: ID | undefined = getFirst(query.npmPackageId)
-
-//   // Not set it to undefined becasue of how nextjs SSR treates SSR props:
-//   // `undefined` cannot be serialized as JSON
-//   const props: ExplorerPageProps = {}
-//   if (!!npmPackageId) {
-//     props.npmPackageId = npmPackageId
-//   }
-
-//   return {
-//     props
-//   }
-// }
-
 const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
   console.log({props})
   const router = useRouter()
@@ -112,7 +96,7 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
 
   function changeCurrentTabIndex(v: number): void {
     setTabState({ ...tabState, currentTabIndex: v })
-    // updateRouterParam(tabState.tabs[v]?.id)
+    updateRouterParam(tabState.tabs[v]?.id)
   }
 
   function openTab(id: ID, name: string): void {

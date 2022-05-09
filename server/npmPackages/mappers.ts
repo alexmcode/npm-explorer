@@ -1,7 +1,6 @@
 import { GQLNpmPackage, GQLNpmPackageVersion, GQLNpmSuggestion } from "generated/graphqlTypes";
 import { DBMap, DBResult } from "server/firebaseWrapper";
 import { NpmAuthor, NpmPackage, NpmPackageVersion, NpmSuggestion } from "./interfaces";
-import * as arrays from "utils/arrays"
 
 export function toStorageOutSuggestion(suggestion: NpmSuggestion): GQLNpmSuggestion {
   return {
@@ -78,7 +77,15 @@ export function encodeNpmPackage(npmPackage: NpmPackage): NpmPackage {
     name: npmPackage.name,
     description: npmPackage.description,
     "dist-tags": npmPackage["dist-tags"],
-    author: npmPackage.author || getEmptyAuthor(),
+    ...(npmPackage.author ? {
+      author: {
+        name: npmPackage.author.name || "",
+        email: encodeDot(npmPackage.author.email),
+        url: encodeDot(npmPackage.author.url || ""),
+      },
+    } : {
+      author: getEmptyAuthor(),
+    }),
     repositoryUrl: npmPackage.repositoryUrl,
     readme: npmPackage.readme,
     versions: versionsToFirebaseKeys(npmPackage.versions),
@@ -93,10 +100,10 @@ export function toStorageOutPackage({id, dbVal}: DBResult<NpmPackage>): GQLNpmPa
     latestVersion: dbVal["dist-tags"]["latest"],
     ...(dbVal.author && {
       author: {
-        id: dbVal.author.email,
-        name: dbVal.author.name,
-        email: dbVal.author.email,
-        url: dbVal.author.url,
+        id: dbVal.author.email || "",
+        name: dbVal.author.name || "",
+        email: dbVal.author.email || "",
+        url: dbVal.author.url || "",
       }
     }),
   }
