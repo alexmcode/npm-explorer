@@ -165,16 +165,6 @@ export type GQLSortKeyDirectionPair = {
   sortDirection: GQLSortDirection;
 };
 
-export type GQLSubscription = {
-  __typename?: 'Subscription';
-  commentAdded?: Maybe<GQLContributor>;
-};
-
-
-export type GQLSubscriptionCommentAddedArgs = {
-  postID: Scalars['ID'];
-};
-
 export type GQLTestResult = {
   __typename?: 'TestResult';
   package: Scalars['String'];
@@ -282,7 +272,6 @@ export type GQLResolversTypes = ResolversObject<{
   SortDirection: GQLSortDirection;
   SortKeyDirectionPair: GQLSortKeyDirectionPair;
   String: ResolverTypeWrapper<Scalars['String']>;
-  Subscription: ResolverTypeWrapper<{}>;
   TestResult: ResolverTypeWrapper<GQLTestResult>;
   UserRole: GQLUserRole;
 }>;
@@ -310,7 +299,6 @@ export type GQLResolversParentTypes = ResolversObject<{
   SignInWithEmailInput: GQLSignInWithEmailInput;
   SortKeyDirectionPair: GQLSortKeyDirectionPair;
   String: Scalars['String'];
-  Subscription: {};
   TestResult: GQLTestResult;
 }>;
 
@@ -403,10 +391,6 @@ export type GQLQueryResolvers<ContextType = any, ParentType extends GQLResolvers
   testQ?: Resolver<GQLResolversTypes['TestResult'], ParentType, ContextType, RequireFields<GQLQueryTestQArgs, 'param'>>;
 }>;
 
-export type GQLSubscriptionResolvers<ContextType = any, ParentType extends GQLResolversParentTypes['Subscription'] = GQLResolversParentTypes['Subscription']> = ResolversObject<{
-  commentAdded?: SubscriptionResolver<Maybe<GQLResolversTypes['Contributor']>, "commentAdded", ParentType, ContextType, RequireFields<GQLSubscriptionCommentAddedArgs, 'postID'>>;
-}>;
-
 export type GQLTestResultResolvers<ContextType = any, ParentType extends GQLResolversParentTypes['TestResult'] = GQLResolversParentTypes['TestResult']> = ResolversObject<{
   package?: Resolver<GQLResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -425,7 +409,6 @@ export type GQLResolvers<ContextType = any> = ResolversObject<{
   NpmSuggestion?: GQLNpmSuggestionResolvers<ContextType>;
   PageInfo?: GQLPageInfoResolvers<ContextType>;
   Query?: GQLQueryResolvers<ContextType>;
-  Subscription?: GQLSubscriptionResolvers<ContextType>;
   TestResult?: GQLTestResultResolvers<ContextType>;
 }>;
 

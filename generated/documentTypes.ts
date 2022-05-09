@@ -166,16 +166,6 @@ export type GQLSortKeyDirectionPair = {
   sortDirection: GQLSortDirection;
 };
 
-export type GQLSubscription = {
-  __typename?: 'Subscription';
-  commentAdded?: Maybe<GQLContributor>;
-};
-
-
-export type GQLSubscriptionCommentAddedArgs = {
-  postID: Scalars['ID'];
-};
-
 export type GQLTestResult = {
   __typename?: 'TestResult';
   package: Scalars['String'];
@@ -413,13 +403,6 @@ export type GQLPrintNpmPackageDepsTreeQueryVariables = Exact<{
 
 export type GQLPrintNpmPackageDepsTreeQuery = { __typename?: 'Query', printNpmPackageDepsTree: string };
 
-export type GQLOnCommentAddedSubscriptionVariables = Exact<{
-  postID: Scalars['ID'];
-}>;
-
-
-export type GQLOnCommentAddedSubscription = { __typename?: 'Subscription', commentAdded?: { __typename?: 'Contributor', id: string, name: string, email: string } | null };
-
 export type GQLPackageVersionForTableFragment = { __typename?: 'NpmPackageVersion', id: string, license: string, numberOfDeps: number, numberOfDevDeps: number, maintainers: Array<{ __typename?: 'Contributor', id: string, name: string, email: string, url?: string | null }> };
 
 export type GQLPackageVersionsQueryVariables = Exact<{
@@ -649,38 +632,6 @@ export function usePrintNpmPackageDepsTreeLazyQuery(baseOptions?: Apollo.LazyQue
 export type PrintNpmPackageDepsTreeQueryHookResult = ReturnType<typeof usePrintNpmPackageDepsTreeQuery>;
 export type PrintNpmPackageDepsTreeLazyQueryHookResult = ReturnType<typeof usePrintNpmPackageDepsTreeLazyQuery>;
 export type PrintNpmPackageDepsTreeQueryResult = Apollo.QueryResult<GQLPrintNpmPackageDepsTreeQuery, GQLPrintNpmPackageDepsTreeQueryVariables>;
-export const OnCommentAddedDocument = gql`
-    subscription OnCommentAdded($postID: ID!) {
-  commentAdded(postID: $postID) {
-    id
-    name
-    email
-  }
-}
-    `;
-
-/**
- * __useOnCommentAddedSubscription__
- *
- * To run a query within a React component, call `useOnCommentAddedSubscription` and pass it any options that fit your needs.
- * When your component renders, `useOnCommentAddedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useOnCommentAddedSubscription({
- *   variables: {
- *      postID: // value for 'postID'
- *   },
- * });
- */
-export function useOnCommentAddedSubscription(baseOptions: Apollo.SubscriptionHookOptions<GQLOnCommentAddedSubscription, GQLOnCommentAddedSubscriptionVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<GQLOnCommentAddedSubscription, GQLOnCommentAddedSubscriptionVariables>(OnCommentAddedDocument, options);
-      }
-export type OnCommentAddedSubscriptionHookResult = ReturnType<typeof useOnCommentAddedSubscription>;
-export type OnCommentAddedSubscriptionResult = Apollo.SubscriptionResult<GQLOnCommentAddedSubscription>;
 export const PackageVersionsDocument = gql`
     query PackageVersions($packageId: ID!, $first: Int!, $skip: Int) {
   npmPackageVersions(

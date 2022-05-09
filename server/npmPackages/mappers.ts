@@ -99,21 +99,6 @@ export function toStorageOutPackage({id, dbVal}: DBResult<NpmPackage>): GQLNpmPa
         url: dbVal.author.url,
       }
     }),
-    // versions: arrays.firebaseDocToArray(dbVal.versions || {}).map((version) => {
-    //   return {
-    //     id: version._id,
-    //     license: version.license,
-    //     maintainers: version.maintainers ? version.maintainers.map((c) => {
-    //       return {
-    //         id: c.email || c.username || "",
-    //         name: c.username || "",
-    //         email: c.email || "n/a",
-    //       }
-    //     }) : [],
-    //     numberOfDeps: Object.keys(version.dependencies || {}).length,
-    //     numberOfDevDeps: Object.keys(version.devDependencies || {}).length,
-    //   }
-    // }),
   }
 }
 

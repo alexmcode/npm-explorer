@@ -60,10 +60,6 @@ export const typeDefs = gql`
     npmPackageVersions(packageId: ID!, pageQuery: PageQuery): NpmPackageVersionPaginatedList!
     printNpmPackageDepsTree(packageId: ID!, packageVersion: String!): String!
   }
-
-  type Subscription {
-    commentAdded(postID: ID!): Contributor
-  }
 `
 
 export const resolvers: GQLResolvers<AppContext> = {
