@@ -1,6 +1,3 @@
-
-
-## Project description
 ### Project name:
 NPM Explorer
 
