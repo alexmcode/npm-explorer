@@ -15,7 +15,13 @@ The project is developed in `NextJS` with `Typescript` and `Firebase` (RTDB) on 
 
 ## Getting Started
 
-First, run the development server:
+First, instal dependencies:
+
+```bash
+yarn install
+```
+
+Run the development server:
 
 ```bash
 # in first terminal
